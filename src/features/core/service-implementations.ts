@@ -113,6 +113,30 @@ export class CoreCourseService implements CourseService {
   async unlockNextLesson(userId: UUID, lessonId: UUID): Promise<Lesson | null> {
     const current = await this.progress.getProgress(userId, lessonId);
     if (!current?.completed) return null;
+
+    const courseId = await this.findCourseIdForLesson(lessonId);
+    if (!courseId) return null;
+
+    const modules = await this.courses.listModules(courseId);
+
+    const orderedLessons: Lesson[] = [];
+    for (const courseModule of modules.sort((a, b) => a.order_index - b.order_index)) {
+      const lessons = await this.courses.listLessons(courseModule.id);
+      orderedLessons.push(...lessons.sort((a, b) => a.order_index - b.order_index));
+    }
+
+    const currentIndex = orderedLessons.findIndex((lesson) => lesson.id === lessonId);
+    return orderedLessons[currentIndex + 1] ?? null;
+  }
+
+  private async findCourseIdForLesson(lessonId: UUID): Promise<UUID | null> {
+    const published = await this.courses.listPublished({ pageSize: 100 });
+    for (const course of published.data) {
+      const lessons = await this.courses.listLessonsByCourse(course.id);
+      if (lessons.some((lesson) => lesson.id === lessonId)) {
+        return course.id;
+      }
+    }
     return null;
   }
 }

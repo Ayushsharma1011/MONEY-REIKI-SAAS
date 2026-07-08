@@ -3,10 +3,12 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { Bookmark, Clock, GraduationCap, Heart, PlayCircle, Sparkles, User } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/features/dashboard/components/progress-ring";
 import { formatDuration } from "@/features/courses/utils";
 import type { CourseCardViewModel } from "@/features/courses/types";
+import { ROUTES } from "@/constants/app";
 import { cn } from "@/lib/utils";
 
 type CourseCardProps = {
@@ -20,7 +22,6 @@ type CourseCardProps = {
 function CourseCardComponent({
   course,
   index = 0,
-  onContinue,
   onToggleFavorite,
   compact = false
 }: CourseCardProps) {
@@ -115,14 +116,11 @@ function CourseCardComponent({
           </span>
         </div>
 
-        <Button
-          className="w-full gap-2"
-          onClick={() => onContinue?.(course.id)}
-          size="sm"
-          type="button"
-        >
-          <PlayCircle className="size-4" aria-hidden />
-          {course.progressPercent > 0 ? "Continue" : "Start Course"}
+        <Button asChild className="w-full gap-2" size="sm">
+          <Link href={`${ROUTES.courses}/${course.slug}`}>
+            <PlayCircle className="size-4" aria-hidden />
+            {course.progressPercent > 0 ? "Continue" : "Start Course"}
+          </Link>
         </Button>
       </div>
     </motion.article>

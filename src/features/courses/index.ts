@@ -1,7 +1,12 @@
 export * from "@/features/courses/constants";
 export * from "@/features/courses/types";
+export * from "@/features/courses/detail-types";
 export * from "@/features/courses/utils";
+export * from "@/features/courses/detail-utils";
 export * from "@/features/courses/service";
 export * from "@/features/courses/queries";
+export * from "@/features/courses/detail-queries";
 export * from "@/features/courses/hooks";
+export * from "@/features/courses/detail-hooks";
 export { CourseLibrary } from "@/features/courses/components/course-library";
+export { CourseDetailsPage } from "@/features/courses/components/detail/course-details-page";

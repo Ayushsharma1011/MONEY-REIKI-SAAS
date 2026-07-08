@@ -1,4 +1,5 @@
 export const COURSE_LIBRARY_QUERY_KEY = "course-library";
+export const COURSE_DETAILS_QUERY_KEY = "course-details";
 
 export const DEFAULT_INSTRUCTOR = "Money Reiki Faculty";
 
