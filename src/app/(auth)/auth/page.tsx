@@ -1,10 +1,6 @@
-import { EmptyState } from "@/components/empty-state";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/constants/app";
 
-export default function AuthPlaceholderPage() {
-  return (
-    <EmptyState
-      title="Authentication foundation ready"
-      description="Login and registration screens are intentionally reserved for MR-002."
-    />
-  );
+export default function AuthPage() {
+  redirect(ROUTES.login);
 }

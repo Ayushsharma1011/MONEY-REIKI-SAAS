@@ -5,7 +5,12 @@ export const APP_DESCRIPTION =
 export const ROUTES = {
   home: "/",
   dashboard: "/dashboard",
-  auth: "/auth"
+  auth: "/login",
+  login: "/login",
+  signup: "/signup",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
+  verifyEmail: "/verify-email"
 } as const;
 
 export const QUERY_STALE_TIME_MS = 60_000;
