@@ -6,6 +6,7 @@ import type {
   LearningPath,
   LearningPathCourse,
   LessonNote,
+  LessonResource,
   LessonResume,
   RecentCourse,
   VideoPlaybackRequest,
@@ -65,11 +66,16 @@ export interface LessonNotesService {
   ): Promise<LessonNote>;
   editNote(userId: UUID, noteId: UUID, content: string): Promise<LessonNote>;
   deleteNote(userId: UUID, noteId: UUID): Promise<void>;
+  listNotesForLesson(userId: UUID, lessonId: UUID): Promise<LessonNote[]>;
   searchNotes(
     userId: UUID,
     query: string,
     options?: QueryOptions
   ): Promise<PaginatedResult<LessonNote>>;
+}
+
+export interface LessonResourceService {
+  listResources(lessonId: UUID): Promise<LessonResource[]>;
 }
 
 export interface LearningPathService {

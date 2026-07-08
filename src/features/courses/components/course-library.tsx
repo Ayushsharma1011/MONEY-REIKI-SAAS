@@ -2,7 +2,9 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { BookOpen } from "lucide-react";
+import { ROUTES } from "@/constants/app";
 import { ErrorStateCard } from "@/features/dashboard/components/empty-state-card";
 import { CategoryChips } from "@/features/courses/components/category-chips";
 import { ContinueLearningCard } from "@/features/courses/components/continue-learning-card";
@@ -28,6 +30,7 @@ function SectionTitle({ children }: { children: string }) {
 
 function CourseLibraryComponent() {
   const { user } = useAuth();
+  const router = useRouter();
   const [filters, setFilters] = useState<CourseFilterState>(DEFAULT_FILTERS);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
@@ -38,9 +41,15 @@ function CourseLibraryComponent() {
   const { data: categoryCourses } = useCoursesByCategory(user?.id, selectedCategoryId);
   const toggleFavorite = useToggleFavorite(user?.id);
 
-  const handleContinue = useCallback((courseId: string) => {
-    void courseId;
-  }, []);
+  const handleContinue = useCallback(
+    (courseId: string) => {
+      const course = data?.courses.find((item) => item.id === courseId);
+      if (course) {
+        router.push(`${ROUTES.courses}/${course.slug}`);
+      }
+    },
+    [data, router]
+  );
 
   const handleToggleFavorite = useCallback(
     (courseId: string, isFavorite: boolean) => {

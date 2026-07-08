@@ -2,6 +2,8 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/app";
 import { CourseDetailsSkeleton } from "@/features/courses/components/detail/course-details-skeleton";
 import { CourseHero } from "@/features/courses/components/detail/course-hero";
 import { CourseLessonSearch } from "@/features/courses/components/detail/course-lesson-search";
@@ -13,12 +15,10 @@ import { CourseSidebar } from "@/features/courses/components/detail/course-sideb
 import { ModuleAccordion } from "@/features/courses/components/detail/module-accordion";
 import { RelatedCourses } from "@/features/courses/components/detail/related-courses";
 import { ReviewPlaceholder } from "@/features/courses/components/detail/review-placeholder";
-import { filterLessonsBySearch } from "@/features/courses/detail-utils";
+import { filterLessonsBySearch, findContinueLesson } from "@/features/courses/detail-utils";
 import { useCourse, useToggleCourseFavorite } from "@/features/courses/detail-hooks";
 import { ErrorStateCard } from "@/features/dashboard/components/empty-state-card";
 import { useAuth } from "@/providers/auth-provider";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/app";
 import type { ModuleViewModel } from "@/features/courses/detail-types";
 
 function filterModulesBySearch(
@@ -49,8 +49,22 @@ function CourseDetailsPageComponent({ courseSlug }: { courseSlug: string }) {
   );
 
   const handleContinue = useCallback(() => {
-    void courseSlug;
-  }, [courseSlug]);
+    if (!data) return;
+    const lesson = findContinueLesson(data.allLessons);
+    if (lesson) {
+      router.push(ROUTES.lesson(courseSlug, lesson.slug));
+    }
+  }, [courseSlug, data, router]);
+
+  const handleLessonAction = useCallback(
+    (lessonId: string) => {
+      const lesson = data?.allLessons.find((item) => item.id === lessonId);
+      if (lesson && lesson.status !== "locked") {
+        router.push(ROUTES.lesson(courseSlug, lesson.slug));
+      }
+    },
+    [courseSlug, data, router]
+  );
 
   const handleToggleFavorite = useCallback(() => {
     if (!data) return;
@@ -103,7 +117,7 @@ function CourseDetailsPageComponent({ courseSlug }: { courseSlug: string }) {
         <div className="space-y-8">
           <CourseOverview overview={data.overview} />
           <CourseLessonSearch onChange={setLessonSearch} value={lessonSearch} />
-          <ModuleAccordion modules={filteredModules} onLessonAction={handleContinue} />
+          <ModuleAccordion modules={filteredModules} onLessonAction={handleLessonAction} />
           <CourseResources resources={data.resources} />
           <ReviewPlaceholder />
           <RelatedCourses courses={data.relatedCourses} onContinue={handleRelatedCourse} />

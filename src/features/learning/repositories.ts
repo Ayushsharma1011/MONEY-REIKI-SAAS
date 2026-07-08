@@ -6,6 +6,7 @@ import type {
   LearningPath,
   LearningPathCourse,
   LessonNote,
+  LessonResource,
   LessonResume,
   LessonVideoAsset,
   RecentCourse,
@@ -109,4 +110,8 @@ export interface VideoRepository {
     lessonId: UUID,
     provider: VideoProviderName
   ): Promise<LessonVideoAsset | null>;
+}
+
+export interface LessonResourceRepository {
+  listByLesson(lessonId: UUID): Promise<LessonResource[]>;
 }

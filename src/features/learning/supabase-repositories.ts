@@ -12,6 +12,7 @@ import type {
   LearningPath,
   LearningPathCourse,
   LessonNote,
+  LessonResource,
   LessonResume,
   LessonVideoAsset,
   RecentCourse,
@@ -24,6 +25,7 @@ import type {
   FavoriteCourseRepository,
   LearningPathRepository,
   LessonNotesRepository,
+  LessonResourceRepository,
   LessonResumeRepository,
   RecentCourseRepository,
   VideoRepository
@@ -562,5 +564,21 @@ export class SupabaseVideoRepository implements VideoRepository {
       .maybeSingle()) as QueryResult<unknown>;
     mapDatabaseError(result.error, "Unable to load video asset.");
     return result.data ? asRecord<LessonVideoAsset>(result.data) : null;
+  }
+}
+
+/** Supabase persistence for lesson resources. */
+export class SupabaseLessonResourceRepository implements LessonResourceRepository {
+  constructor(private readonly supabase: SupabaseClient) {}
+
+  /** List resources attached to a lesson. */
+  async listByLesson(lessonId: UUID): Promise<LessonResource[]> {
+    const result = (await this.supabase
+      .from("lesson_resources")
+      .select("*")
+      .eq("lesson_id", lessonId)
+      .order("order_index")) as QueryResult<unknown[]>;
+    mapDatabaseError(result.error, "Unable to list lesson resources.");
+    return asRecord<LessonResource[]>(result.data ?? []);
   }
 }

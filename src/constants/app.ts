@@ -12,7 +12,9 @@ export const ROUTES = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   verifyEmail: "/verify-email",
-  onboarding: "/onboarding"
+  onboarding: "/onboarding",
+  lesson: (courseSlug: string, lessonSlug: string) =>
+    `/courses/${courseSlug}/lessons/${lessonSlug}`
 } as const;
 
 export const QUERY_STALE_TIME_MS = 60_000;

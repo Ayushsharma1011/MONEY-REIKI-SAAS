@@ -6,6 +6,7 @@ import type {
   FavoriteCourse,
   LearningPathCourse,
   LessonNote,
+  LessonResource,
   LessonResume,
   RecentCourse,
   VideoPlaybackRequest,
@@ -17,6 +18,7 @@ import type {
   FavoriteCourseRepository,
   LearningPathRepository,
   LessonNotesRepository,
+  LessonResourceRepository,
   LessonResumeRepository,
   RecentCourseRepository,
   VideoRepository
@@ -36,6 +38,7 @@ import type {
   FavoriteCourseService,
   LearningPathService,
   LessonNotesService,
+  LessonResourceService,
   LessonResumeService,
   RecentCourseService,
   VideoService
@@ -222,6 +225,11 @@ export class CoreLessonNotesService implements LessonNotesService {
     await this.notes.delete(noteId, userId);
   }
 
+  /** List notes for a specific lesson. */
+  async listNotesForLesson(userId: UUID, lessonId: UUID): Promise<LessonNote[]> {
+    return this.notes.listByLesson(userId, lessonId);
+  }
+
   /** Search lesson notes by query string. */
   async searchNotes(
     userId: UUID,
@@ -380,6 +388,18 @@ export class CoreRecentCourseService implements RecentCourseService {
   /** Clear recently viewed history for a user. */
   async clearHistory(userId: UUID): Promise<void> {
     await this.recent.clearHistory(userId);
+  }
+}
+
+/**
+ * Production lesson resource business service.
+ */
+export class CoreLessonResourceService implements LessonResourceService {
+  constructor(private readonly resources: LessonResourceRepository) {}
+
+  /** List downloadable resources for a lesson. */
+  async listResources(lessonId: UUID): Promise<LessonResource[]> {
+    return this.resources.listByLesson(lessonId);
   }
 }
 
