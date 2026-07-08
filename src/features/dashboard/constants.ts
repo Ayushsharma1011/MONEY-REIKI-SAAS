@@ -51,7 +51,7 @@ export const QUICK_ACTIONS: QuickAction[] = [
   { id: "journal", label: "Journal", href: `${ROUTES.dashboard}#journal`, icon: NotebookPen },
   { id: "meditation", label: "Meditation", href: `${ROUTES.dashboard}#meditation`, icon: Brain },
   { id: "practice", label: "Practice", href: `${ROUTES.dashboard}#practice`, icon: Sparkles },
-  { id: "courses", label: "Courses", href: `${ROUTES.dashboard}#courses`, icon: GraduationCap },
+  { id: "courses", label: "Courses", href: ROUTES.courses, icon: GraduationCap },
   { id: "wish-box", label: "Wish Box", href: `${ROUTES.dashboard}#wish-box`, icon: Heart },
   { id: "vision-board", label: "Vision Board", href: `${ROUTES.dashboard}#vision-board`, icon: BookOpen },
   { id: "profile", label: "Profile", href: `${ROUTES.dashboard}#profile`, icon: UserRound }
@@ -65,7 +65,7 @@ export type StudentNavItem = {
 
 export const STUDENT_NAV_ITEMS: StudentNavItem[] = [
   { title: "Home", href: ROUTES.dashboard, icon: Home },
-  { title: "Courses", href: `${ROUTES.dashboard}#courses`, icon: GraduationCap },
+  { title: "Courses", href: ROUTES.courses, icon: GraduationCap },
   { title: "Practice", href: `${ROUTES.dashboard}#practice`, icon: Sparkles },
   { title: "Journal", href: `${ROUTES.dashboard}#journal`, icon: NotebookPen },
   { title: "Profile", href: `${ROUTES.dashboard}#profile`, icon: UserRound }

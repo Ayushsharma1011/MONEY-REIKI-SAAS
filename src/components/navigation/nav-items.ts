@@ -15,7 +15,7 @@ export const publicNavItems: NavItem[] = [
 
 export const dashboardNavItems: NavItem[] = [
   { title: "Home", href: ROUTES.dashboard, icon: LayoutDashboard },
-  { title: "Courses", href: `${ROUTES.dashboard}#courses`, icon: BookOpen },
+  { title: "Courses", href: ROUTES.courses, icon: BookOpen },
   { title: "Practice", href: `${ROUTES.dashboard}#practice`, icon: Sparkles },
   { title: "Journal", href: `${ROUTES.dashboard}#journal`, icon: NotebookPen },
   { title: "Profile", href: `${ROUTES.dashboard}#profile`, icon: UserRound }

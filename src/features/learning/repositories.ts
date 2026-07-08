@@ -67,6 +67,7 @@ export interface LessonNotesRepository {
 }
 
 export interface LearningPathRepository {
+  list(): Promise<LearningPath[]>;
   findById(id: UUID): Promise<LearningPath | null>;
   findBySlug(slug: string): Promise<LearningPath | null>;
   listCourses(learningPathId: UUID): Promise<LearningPathCourse[]>;

@@ -73,6 +73,7 @@ export interface LessonNotesService {
 }
 
 export interface LearningPathService {
+  listLearningPaths(): Promise<LearningPath[]>;
   getLearningPath(slug: string): Promise<{
     path: LearningPath;
     courses: LearningPathCourse[];
@@ -91,6 +92,7 @@ export interface FavoriteCourseService {
     userId: UUID,
     options?: QueryOptions
   ): Promise<PaginatedResult<FavoriteCourse>>;
+  isFavorite(userId: UUID, courseId: UUID): Promise<boolean>;
 }
 
 export interface RecentCourseService {

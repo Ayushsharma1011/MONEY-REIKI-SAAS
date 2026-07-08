@@ -344,6 +344,17 @@ export class SupabaseLessonNotesRepository implements LessonNotesRepository {
 export class SupabaseLearningPathRepository implements LearningPathRepository {
   constructor(private readonly supabase: SupabaseClient) {}
 
+  /** List all active learning paths. */
+  async list(): Promise<LearningPath[]> {
+    const result = (await this.supabase
+      .from("learning_paths")
+      .select("*")
+      .is("deleted_at", null)
+      .order("order_index")) as QueryResult<unknown[]>;
+    mapDatabaseError(result.error, "Unable to list learning paths.");
+    return asRecord<LearningPath[]>(result.data ?? []);
+  }
+
   /** Find a learning path by id. */
   async findById(id: UUID): Promise<LearningPath | null> {
     const result = (await this.supabase

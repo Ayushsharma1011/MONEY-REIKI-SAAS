@@ -241,6 +241,11 @@ export class CoreLessonNotesService implements LessonNotesService {
 export class CoreLearningPathService implements LearningPathService {
   constructor(private readonly paths: LearningPathRepository) {}
 
+  /** List all active learning paths. */
+  async listLearningPaths() {
+    return this.paths.list();
+  }
+
   /** Get a learning path and ordered courses by slug. */
   async getLearningPath(slug: string) {
     const path = await this.paths.findBySlug(slug);
@@ -328,6 +333,11 @@ export class CoreFavoriteCourseService implements FavoriteCourseService {
   /** List favorite courses for a user. */
   async listFavorites(userId: UUID, options?: Parameters<FavoriteCourseRepository["listByUser"]>[1]) {
     return this.favorites.listByUser(userId, options);
+  }
+
+  /** Check whether a course is favorited. */
+  async isFavorite(userId: UUID, courseId: UUID): Promise<boolean> {
+    return this.favorites.isFavorite(userId, courseId);
   }
 }
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ROUTES } from "@/constants/app";
 import { STUDENT_NAV_ITEMS } from "@/features/dashboard/constants";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,9 @@ export function BottomNavigation() {
       <div className="mx-auto flex max-w-lg justify-around px-2 py-2">
         {STUDENT_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href && !item.href.includes("#");
+          const isActive =
+            pathname === item.href ||
+            (item.href !== ROUTES.dashboard && pathname.startsWith(item.href));
 
           return (
             <Link
