@@ -187,9 +187,12 @@ export type DashboardSnapshot = {
   unreadNotifications: number;
   recentJournal: JournalEntry | null;
   currentChallenge: ChallengeProgress | null;
+  activeWish: WishBoxItem | null;
+  dailyAffirmation: Affirmation | null;
   upcomingLiveSession: {
     title: string;
+    facilitator?: string;
     startsAt: ISODateTime | null;
-    status: "placeholder";
-  };
+    status: "scheduled" | "placeholder";
+  } | null;
 };

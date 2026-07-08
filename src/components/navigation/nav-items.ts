@@ -1,4 +1,11 @@
-import { Home, LayoutDashboard } from "lucide-react";
+import {
+  BookOpen,
+  Home,
+  LayoutDashboard,
+  NotebookPen,
+  Sparkles,
+  UserRound
+} from "lucide-react";
 import { ROUTES } from "@/constants/app";
 import type { NavItem } from "@/types";
 
@@ -7,5 +14,9 @@ export const publicNavItems: NavItem[] = [
 ];
 
 export const dashboardNavItems: NavItem[] = [
-  { title: "Overview", href: ROUTES.dashboard, icon: LayoutDashboard }
+  { title: "Home", href: ROUTES.dashboard, icon: LayoutDashboard },
+  { title: "Courses", href: `${ROUTES.dashboard}#courses`, icon: BookOpen },
+  { title: "Practice", href: `${ROUTES.dashboard}#practice`, icon: Sparkles },
+  { title: "Journal", href: `${ROUTES.dashboard}#journal`, icon: NotebookPen },
+  { title: "Profile", href: `${ROUTES.dashboard}#profile`, icon: UserRound }
 ];

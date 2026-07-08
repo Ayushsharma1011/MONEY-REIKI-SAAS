@@ -19,6 +19,7 @@ import type {
   Repository
 } from "./repositories";
 import type {
+  Affirmation,
   AnalyticsEvent,
   Challenge,
   ChallengeProgress,
@@ -33,7 +34,8 @@ import type {
   Notification,
   PaginatedResult,
   QueryOptions,
-  UUID
+  UUID,
+  WishBoxItem
 } from "../../types/core";
 
 type DbRecord = Record<string, unknown>;
@@ -697,6 +699,34 @@ export class SupabaseDashboardRepository implements DashboardRepository {
       .maybeSingle()) as QueryResult<unknown>;
     mapDatabaseError(result.error, "Unable to load user progress.");
     return result.data ? asRecord<Record<string, unknown>>(result.data) : null;
+  }
+
+  /** Get the user's active wish box item. */
+  async getActiveWishBoxItem(userId: UUID): Promise<WishBoxItem | null> {
+    const result = (await this.supabase
+      .from("wish_box_items")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("status", "active")
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()) as QueryResult<unknown>;
+    mapDatabaseError(result.error, "Unable to load wish box item.");
+    return result.data ? asRecord<WishBoxItem>(result.data) : null;
+  }
+
+  /** Get a daily affirmation from the library. */
+  async getDailyAffirmation(): Promise<Affirmation | null> {
+    const result = (await this.supabase
+      .from("affirmations")
+      .select("*")
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()) as QueryResult<unknown>;
+    mapDatabaseError(result.error, "Unable to load affirmation.");
+    return result.data ? asRecord<Affirmation>(result.data) : null;
   }
 }
 

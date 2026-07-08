@@ -439,7 +439,9 @@ export class CoreDashboardService implements DashboardService {
       meditations,
       unreadNotifications,
       journals,
-      currentChallenge
+      currentChallenge,
+      activeWish,
+      dailyAffirmation
     ] = await Promise.all([
       this.dashboard.getProfile(userId),
       this.dashboard.getProgress(userId),
@@ -449,7 +451,9 @@ export class CoreDashboardService implements DashboardService {
       this.meditations.listRecentlyPlayed(userId),
       this.notifications.unreadCount(userId),
       this.journals.listByUser(userId, { pageSize: 1 }),
-      this.challenges.getCurrentProgress(userId)
+      this.challenges.getCurrentProgress(userId),
+      this.dashboard.getActiveWishBoxItem(userId),
+      this.dashboard.getDailyAffirmation()
     ]);
 
     return {
@@ -462,11 +466,9 @@ export class CoreDashboardService implements DashboardService {
       unreadNotifications,
       recentJournal: journals.data[0] ?? null,
       currentChallenge,
-      upcomingLiveSession: {
-        title: "Live session coming soon",
-        startsAt: null,
-        status: "placeholder"
-      }
+      activeWish,
+      dailyAffirmation,
+      upcomingLiveSession: null
     };
   }
 }

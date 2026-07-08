@@ -1,4 +1,5 @@
 import type {
+  Affirmation,
   AnalyticsEvent,
   Challenge,
   ChallengeProgress,
@@ -13,7 +14,8 @@ import type {
   Notification,
   PaginatedResult,
   QueryOptions,
-  UUID
+  UUID,
+  WishBoxItem
 } from "@/types/core";
 
 export interface Repository<TRecord, TCreate, TUpdate> {
@@ -101,6 +103,8 @@ export interface DashboardRepository {
     onboarding_completed: boolean;
   } | null>;
   getProgress(userId: UUID): Promise<Record<string, unknown> | null>;
+  getActiveWishBoxItem(userId: UUID): Promise<WishBoxItem | null>;
+  getDailyAffirmation(): Promise<Affirmation | null>;
 }
 
 export interface NotificationRepository {
