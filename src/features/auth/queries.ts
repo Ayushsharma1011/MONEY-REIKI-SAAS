@@ -7,7 +7,9 @@ export async function getCurrentProfile(
   const supabase = createSupabaseBrowserClient();
   const { data, error } = await supabase
     .from("profiles")
-    .select("id,email,full_name,avatar_url,role,created_at,updated_at")
+    .select(
+      "id,email,full_name,avatar_url,bio,experience_level,onboarding_completed,primary_goal,role,created_at,updated_at"
+    )
     .eq("id", userId)
     .maybeSingle();
 

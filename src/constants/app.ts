@@ -10,7 +10,8 @@ export const ROUTES = {
   signup: "/signup",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
-  verifyEmail: "/verify-email"
+  verifyEmail: "/verify-email",
+  onboarding: "/onboarding"
 } as const;
 
 export const QUERY_STALE_TIME_MS = 60_000;

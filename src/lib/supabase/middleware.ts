@@ -47,13 +47,43 @@ export async function updateSession(request: NextRequest) {
   const isGuestOnlyRoute = guestOnlyRoutes.some((route) =>
     pathname.startsWith(route)
   );
-  const isProtectedRoute = pathname.startsWith(ROUTES.dashboard);
+  const isOnboardingRoute = pathname.startsWith(ROUTES.onboarding);
+  const isProtectedRoute =
+    pathname.startsWith(ROUTES.dashboard) || isOnboardingRoute;
 
   if (!user && isProtectedRoute) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = ROUTES.login;
     redirectUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(redirectUrl);
+  }
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const onboardingCompleted = Boolean(
+      profile && "onboarding_completed" in profile
+        ? profile.onboarding_completed
+        : false
+    );
+
+    if (!onboardingCompleted && pathname.startsWith(ROUTES.dashboard)) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = ROUTES.onboarding;
+      redirectUrl.search = "";
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    if (onboardingCompleted && isOnboardingRoute) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = ROUTES.dashboard;
+      redirectUrl.search = "";
+      return NextResponse.redirect(redirectUrl);
+    }
   }
 
   if (user && isGuestOnlyRoute) {
