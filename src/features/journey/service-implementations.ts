@@ -277,6 +277,11 @@ export class CoreJourneyTaskService implements JourneyTaskService {
     return this.tasks.listByDay(day.id);
   }
 
+  /** List tasks for a specific journey day. */
+  async listTasksForDay(journeyDayId: UUID): Promise<JourneyTask[]> {
+    return this.tasks.listByDay(journeyDayId);
+  }
+
   /** Complete a journey task. */
   async completeTask(userId: UUID, taskId: UUID, timeSpent = 0): Promise<void> {
     const task = await this.tasks.findById(taskId);

@@ -13,10 +13,12 @@ import {
   SupabaseNotificationRepository,
   SupabasePracticeRepository
 } from "@/features/core/supabase-repositories";
+import { createJourneyServices } from "@/features/journey/service";
 
 export function createDashboardServices(supabase: SupabaseClient) {
   const courses = new SupabaseCourseRepository(supabase);
   const lessonProgress = new SupabaseLessonProgressRepository(supabase);
+  const journeyServices = createJourneyServices(supabase);
 
   return {
     dashboard: new CoreDashboardService(
@@ -26,8 +28,10 @@ export function createDashboardServices(supabase: SupabaseClient) {
       new SupabaseMeditationRepository(supabase),
       new SupabaseNotificationRepository(supabase),
       new SupabaseJournalRepository(supabase),
-      new SupabaseChallengeRepository(supabase)
+      new SupabaseChallengeRepository(supabase),
+      journeyServices.dailyMission
     ),
-    courses: new CoreCourseService(courses, lessonProgress)
+    courses: new CoreCourseService(courses, lessonProgress),
+    journey: journeyServices
   };
 }

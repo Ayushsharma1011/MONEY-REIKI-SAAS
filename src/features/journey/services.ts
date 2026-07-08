@@ -28,6 +28,7 @@ export interface JourneyDayService {
 
 export interface JourneyTaskService {
   todaysTasks(userId: UUID): Promise<JourneyTask[]>;
+  listTasksForDay(journeyDayId: UUID): Promise<JourneyTask[]>;
   completeTask(userId: UUID, taskId: UUID, timeSpent?: number): Promise<void>;
   skipTask(userId: UUID, taskId: UUID): Promise<void>;
   validateCompletion(userId: UUID, taskId: UUID): Promise<boolean>;

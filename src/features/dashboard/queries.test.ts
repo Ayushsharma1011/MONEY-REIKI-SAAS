@@ -41,7 +41,8 @@ describe("dashboardQuery", () => {
       } as unknown as CoreDashboardService,
       courses: {
         calculateCompletionPercentage: vi.fn().mockResolvedValue(0)
-      } as unknown as CoreCourseService
+      } as unknown as CoreCourseService,
+      journey: {} as never
     });
 
     const { dashboardQuery } = await import("@/features/dashboard/queries");

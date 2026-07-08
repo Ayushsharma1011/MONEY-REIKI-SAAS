@@ -1,4 +1,6 @@
-import { Settings } from "lucide-react";
+"use client";
+
+import { Settings, Zap } from "lucide-react";
 import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import { NotificationBell } from "@/features/dashboard/components/notification-bell";
@@ -8,12 +10,20 @@ export function DashboardHeader({
   greeting,
   profileName,
   avatarUrl,
-  unreadNotifications
+  unreadNotifications,
+  journeyTitle,
+  currentDay,
+  currentLevel,
+  currentXp
 }: {
   greeting: DashboardGreeting;
   profileName: string;
   avatarUrl: string | null;
   unreadNotifications: number;
+  journeyTitle?: string | null;
+  currentDay?: number | null;
+  currentLevel?: number | null;
+  currentXp?: number | null;
 }) {
   return (
     <header className="bg-background/80 sticky top-0 z-30 -mx-4 border-b px-4 py-4 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:top-0">
@@ -21,11 +31,29 @@ export function DashboardHeader({
         <div className="min-w-0 flex-1">
           <p className="text-muted-foreground text-xs">{greeting.dateLabel}</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-            {greeting.label} {greeting.firstName} 👋
+            {greeting.label}, {greeting.firstName}
           </h1>
-          <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-relaxed">
-            {greeting.quote}
-          </p>
+          {journeyTitle ? (
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+              <span className="bg-primary/10 text-primary rounded-full px-2.5 py-0.5 text-xs font-medium">
+                {journeyTitle}
+              </span>
+              {currentDay ? (
+                <span className="text-muted-foreground text-xs">Day {currentDay}</span>
+              ) : null}
+              {currentLevel ? (
+                <span className="text-muted-foreground inline-flex items-center gap-1 text-xs">
+                  <Zap className="text-accent size-3" aria-hidden />
+                  Lvl {currentLevel}
+                  {typeof currentXp === "number" ? ` · ${currentXp} XP` : null}
+                </span>
+              ) : null}
+            </div>
+          ) : (
+            <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-relaxed">
+              {greeting.quote}
+            </p>
+          )}
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <NotificationBell count={unreadNotifications} />
