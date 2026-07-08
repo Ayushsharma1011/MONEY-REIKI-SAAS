@@ -33,6 +33,16 @@ export interface CourseRepository extends Repository<
   listPublished(options?: QueryOptions): Promise<PaginatedResult<Course>>;
   listModules(courseId: UUID): Promise<CourseModule[]>;
   listLessons(moduleId: UUID): Promise<Lesson[]>;
+  listLessonsByCourse(courseId: UUID): Promise<Lesson[]>;
+}
+
+export interface LessonRepository extends Repository<
+  Lesson,
+  Omit<Lesson, "id" | "created_at" | "updated_at">,
+  Partial<Lesson>
+> {
+  findBySlug(moduleId: UUID, slug: string): Promise<Lesson | null>;
+  listByModule(moduleId: UUID): Promise<Lesson[]>;
 }
 
 export interface JournalRepository extends Repository<
@@ -55,6 +65,13 @@ export interface MeditationRepository extends Repository<
     category: string,
     options?: QueryOptions
   ): Promise<PaginatedResult<Meditation>>;
+  listRecentlyPlayed(userId: UUID): Promise<Meditation[]>;
+  listFavorites(userId: UUID): Promise<Meditation[]>;
+  completeSession(
+    userId: UUID,
+    meditationId: UUID,
+    duration: number
+  ): Promise<void>;
 }
 
 export interface PracticeRepository extends Repository<
@@ -63,6 +80,12 @@ export interface PracticeRepository extends Repository<
   Partial<DailyPractice>
 > {
   completePractice(userId: UUID, practiceId: UUID): Promise<void>;
+  getTodayPractice(userId: UUID): Promise<DailyPractice | null>;
+  getPracticeHistory(
+    userId: UUID,
+    options?: QueryOptions
+  ): Promise<PaginatedResult<DailyPractice>>;
+  calculateStreak(userId: UUID): Promise<number>;
 }
 
 export interface DashboardRepository {
@@ -71,6 +94,13 @@ export interface DashboardRepository {
     widgetId: UUID,
     orderIndex: number
   ): Promise<DashboardWidget>;
+  getProfile(userId: UUID): Promise<{
+    id: UUID;
+    full_name: string;
+    avatar_url: string | null;
+    onboarding_completed: boolean;
+  } | null>;
+  getProgress(userId: UUID): Promise<Record<string, unknown> | null>;
 }
 
 export interface NotificationRepository {
@@ -79,6 +109,9 @@ export interface NotificationRepository {
     options?: QueryOptions
   ): Promise<PaginatedResult<Notification>>;
   markRead(notificationId: UUID, userId: UUID): Promise<void>;
+  markAllRead(userId: UUID): Promise<void>;
+  unreadCount(userId: UUID): Promise<number>;
+  delete(notificationId: UUID, userId: UUID): Promise<void>;
   create(input: Omit<Notification, "id" | "created_at">): Promise<Notification>;
 }
 
@@ -91,6 +124,9 @@ export interface ChallengeRepository extends Repository<
     userId: UUID,
     challengeId: UUID
   ): Promise<ChallengeProgress | null>;
+  getCurrentProgress(userId: UUID): Promise<ChallengeProgress | null>;
+  joinChallenge(userId: UUID, challengeId: UUID): Promise<ChallengeProgress>;
+  completeDay(userId: UUID, challengeId: UUID): Promise<ChallengeProgress>;
 }
 
 export interface AnalyticsRepository {
@@ -102,6 +138,11 @@ export interface AnalyticsRepository {
 
 export interface LessonProgressRepository {
   completeLesson(
+    userId: UUID,
+    lessonId: UUID,
+    watchTime: number
+  ): Promise<void>;
+  updateWatchTime(
     userId: UUID,
     lessonId: UUID,
     watchTime: number

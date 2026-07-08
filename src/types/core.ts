@@ -168,4 +168,28 @@ export type QueryOptions = {
   page?: number;
   pageSize?: number;
   search?: string;
+  mood?: string;
+  tags?: string[];
+};
+
+export type DashboardSnapshot = {
+  profile: {
+    id: UUID;
+    full_name: string;
+    avatar_url: string | null;
+    onboarding_completed: boolean;
+  } | null;
+  progress: JsonObject | null;
+  currentStreak: number;
+  todaysPractice: DailyPractice | null;
+  continueCourse: Course | null;
+  latestMeditation: Meditation | null;
+  unreadNotifications: number;
+  recentJournal: JournalEntry | null;
+  currentChallenge: ChallengeProgress | null;
+  upcomingLiveSession: {
+    title: string;
+    startsAt: ISODateTime | null;
+    status: "placeholder";
+  };
 };
