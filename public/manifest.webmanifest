@@ -1,0 +1,10 @@
+{
+  "name": "Money Reiki OS",
+  "short_name": "Money Reiki",
+  "description": "AI-powered student platform foundation for Money Reiki students.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8faf9",
+  "theme_color": "#063b35",
+  "icons": []
+}
