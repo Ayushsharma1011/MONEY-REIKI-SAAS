@@ -29,7 +29,8 @@ describe("dashboardQuery", () => {
       currentChallenge: null,
       activeWish: null,
       dailyAffirmation: null,
-      upcomingLiveSession: null
+      upcomingLiveSession: null,
+      todaysJourney: null
     };
 
     const { createDashboardServices } = await import("@/features/dashboard/service");

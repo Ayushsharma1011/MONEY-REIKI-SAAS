@@ -1,4 +1,5 @@
 import { NotFoundError, ValidationError } from "../../lib/errors";
+import type { DailyMissionService } from "@/features/journey/services";
 import type {
   AnalyticsRepository,
   ChallengeRepository,
@@ -420,7 +421,8 @@ export class CoreDashboardService implements DashboardService {
     private readonly meditations: MeditationRepository,
     private readonly notifications: NotificationRepository,
     private readonly journals: JournalRepository,
-    private readonly challenges: ChallengeRepository
+    private readonly challenges: ChallengeRepository,
+    private readonly dailyMission?: DailyMissionService
   ) {}
 
   /** List dashboard widgets. */
@@ -441,7 +443,8 @@ export class CoreDashboardService implements DashboardService {
       journals,
       currentChallenge,
       activeWish,
-      dailyAffirmation
+      dailyAffirmation,
+      journeySummary
     ] = await Promise.all([
       this.dashboard.getProfile(userId),
       this.dashboard.getProgress(userId),
@@ -453,7 +456,8 @@ export class CoreDashboardService implements DashboardService {
       this.journals.listByUser(userId, { pageSize: 1 }),
       this.challenges.getCurrentProgress(userId),
       this.dashboard.getActiveWishBoxItem(userId),
-      this.dashboard.getDailyAffirmation()
+      this.dashboard.getDailyAffirmation(),
+      this.dailyMission?.getDashboardJourneySummary(userId) ?? Promise.resolve(null)
     ]);
 
     return {
@@ -468,7 +472,8 @@ export class CoreDashboardService implements DashboardService {
       currentChallenge,
       activeWish,
       dailyAffirmation,
-      upcomingLiveSession: null
+      upcomingLiveSession: null,
+      todaysJourney: journeySummary
     };
   }
 }

@@ -31,7 +31,8 @@ const baseSnapshot: DashboardSnapshot = {
   currentChallenge: null,
   activeWish: null,
   dailyAffirmation: null,
-  upcomingLiveSession: null
+  upcomingLiveSession: null,
+  todaysJourney: null
 };
 
 describe("dashboard utils", () => {

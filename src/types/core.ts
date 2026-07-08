@@ -195,4 +195,26 @@ export type DashboardSnapshot = {
     startsAt: ISODateTime | null;
     status: "scheduled" | "placeholder";
   } | null;
+  todaysJourney: DashboardJourneySummary | null;
+};
+
+export type DashboardJourneySummary = {
+  journey: {
+    id: UUID;
+    title: string;
+    slug: string;
+    difficulty: string;
+  } | null;
+  dailyMission: {
+    dayNumber: number;
+    title: string;
+    estimatedMinutes: number;
+    remainingTasks: number;
+    completionPercentage: number;
+    currentXp: number;
+  } | null;
+  currentDay: number;
+  currentXp: number;
+  completionPercentage: number;
+  remainingTasks: number;
 };

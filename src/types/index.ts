@@ -20,3 +20,4 @@ export type AppError = {
 
 export * from "@/types/core";
 export * from "@/types/learning";
+export * from "@/types/journey";
